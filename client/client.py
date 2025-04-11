@@ -10,8 +10,8 @@ LOCAL_PROXY_IP = '127.0.0.1' # Listen only on the local machine
 LOCAL_PROXY_PORT = 8080      # Port your browser will connect to
 
 # Where the ACTUAL VPN/Proxy Server is running
-REMOTE_SERVER_IP = '106.193.229.250' # Public IP of the server machine
-REMOTE_SERVER_PORT = 4433     # The port the server is listening on
+REMOTE_SERVER_IP = '0.tcp.in.ngrok.io' # Public IP of the server machine
+REMOTE_SERVER_PORT = 13017     # The port the server is listening on
 
 SHARED_SECRET_KEY = b'O0gwAWlOpoEmQIlFn51lC357JZ78jI02lj73jQMQVMU=' 
 BUFFER_SIZE = 8192 # Increased buffer size slightly, web pages can be large
