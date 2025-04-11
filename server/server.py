@@ -4,9 +4,9 @@ import requests
 from cryptography.fernet import Fernet
 
 # --- Configuration ---
-LISTEN_IP = '0.0.0.0'  # Listen on all available network interfaces
-LISTEN_PORT = 4433     
-SHARED_SECRET_KEY = b'' 
+LISTEN_IP = '127.0.0.1'  # Listen on all available network interfaces
+LISTEN_PORT = 4433
+SHARED_SECRET_KEY = b'O0gwAWlOpoEmQIlFn51lC357JZ78jI02lj73jQMQVMU=' 
 BUFFER_SIZE = 4096
 # --- End Configuration ---
 
