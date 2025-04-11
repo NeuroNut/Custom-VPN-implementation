@@ -5,8 +5,8 @@ from cryptography.fernet import Fernet
 
 # --- Configuration ---
 LISTEN_IP = '0.0.0.0'  # Listen on all available network interfaces
-LISTEN_PORT = 4433     # The port you opened/forwarded
-SHARED_SECRET_KEY = b'PASTE_YOUR_GENERATED_KEY_HERE' # Paste the key generated in Step 1
+LISTEN_PORT = 4433     
+SHARED_SECRET_KEY = b'' 
 BUFFER_SIZE = 4096
 # --- End Configuration ---
 
@@ -47,7 +47,7 @@ def handle_client(client_socket):
                 # Use requests library to handle HTTP/HTTPS, redirects, etc.
                 # Sending a standard User-Agent to look like a normal browser
                 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
-                # IMPORTANT: Allow redirects, verify SSL certificates
+                # Allow redirects, verify SSL certificates
                 response = requests.get(target_url, headers=headers, timeout=15, stream=True, allow_redirects=True, verify=True)
                 response.raise_for_status() # Raise exception for bad status codes (4xx or 5xx)
 
