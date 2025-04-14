@@ -56,7 +56,6 @@ def forward_to_server(target_url_bytes):
                 encrypted_response_chunks.append(chunk)
             except socket.timeout:
                 print("[-] Timeout waiting for more data from server.")
-                
                 break
             except socket.error as e:
                 print(f"[-] Socket error receiving from server: {e}")
@@ -91,14 +90,13 @@ def handle_browser_request(browser_socket):
     try:
         # 1. Receive request from browser (just need the first line usually for target)
         # We don't parse the full HTTP request for simplicity
-        # We are making a big assumption here about the request format
         browser_request = browser_socket.recv(BUFFER_SIZE)
         if not browser_request:
             print("[-] Browser disconnected before sending data.")
             return
 
         print(f"[>] Received {len(browser_request)} bytes from browser.")
-        # Try to decode the initial part for parsing
+
         try:
             request_str = browser_request.decode('utf-8', errors='ignore')
             first_line = request_str.split('\r\n')[0]
@@ -125,24 +123,13 @@ def handle_browser_request(browser_socket):
             print("[-] Could not determine target URL reliably.")
             return # Exit if parsing fails
 
-        # --- Special Handling for CONNECT (HTTPS) ---
-        # If the browser sends a CONNECT request, it expects a '200 Connection established'
-        # response *before* it starts sending the actual encrypted TLS data.
-        # Our simple proxy design doesn't handle the TLS layer itself.
-        # We will tell the server the target host/port, let the server make the connection,
-        # and then just shuttle the *encrypted* data back and forth.
-        # For this simple setup, we *won't* send the 200 OK immediately.
-        # We rely on the server fetching the content and sending it back encrypted.
-        # This might break some strict HTTPS implementations but often works.
-        # A more robust proxy would send the 200 OK then start tunneling raw TCP.
-        # We are keeping it simple: ask server to fetch URL/Host.
 
-        # 2. Forward the TARGET URL (encrypted) to the server
+        # Forwarding the TARGET URL (encrypted) to the server
         encrypted_response = forward_to_server(target_url_bytes)
 
         if encrypted_response is None:
             print("[-] Failed to get response from remote server.")
-            # Maybe send an HTTP error page to the browser?
+            # sending an error page to the browser
             error_page = b"HTTP/1.1 502 Bad Gateway\r\nContent-Type: text/html\r\n\r\n<html><body><h1>502 Bad Gateway</h1><p>Proxy server could not reach the upstream server.</p></body></html>"
             try:
                 browser_socket.sendall(error_page)
@@ -150,7 +137,7 @@ def handle_browser_request(browser_socket):
                 pass # Ignore if browser connection is already dead
             return
 
-        # 3. Decrypt the response from the server
+        # Decrypt the response from the server
         try:
             decrypted_response = cipher_suite.decrypt(encrypted_response)
             print(f"[<] Decrypted {len(decrypted_response)} bytes from server.")
@@ -193,10 +180,10 @@ def start_local_proxy():
         local_server.bind((LOCAL_PROXY_IP, LOCAL_PROXY_PORT))
         local_server.listen(5)
         print(f"[*] Local proxy listening on {LOCAL_PROXY_IP}:{LOCAL_PROXY_PORT}")
-        print(f"[*] Configure your browser to use HTTP Proxy: {LOCAL_PROXY_IP} Port: {LOCAL_PROXY_PORT}")
+        #print(f"[*] Configure your browser to use HTTP Proxy: {LOCAL_PROXY_IP} Port: {LOCAL_PROXY_PORT}")
     except socket.error as e:
         print(f"[-] Failed to bind or listen on {LOCAL_PROXY_IP}:{LOCAL_PROXY_PORT}. Error: {e}")
-        print(f"    Check if port {LOCAL_PROXY_PORT} is already in use.")
+        #print(f"    Check if port {LOCAL_PROXY_PORT} is already in use.")
         return
     except Exception as e:
          print(f"[-] Unexpected error during local proxy setup: {e}")
