@@ -1,0 +1,11 @@
+{
+  "name": "proxy-toggle-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^35.1.5"
+  }
+}

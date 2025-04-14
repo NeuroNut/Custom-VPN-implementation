@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proxy Switch</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to bottom, #e0eafc, #cfdef3);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h2 {
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .switch-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      background-color: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      transition: 0.4s;
+      box-shadow: inset 0 0 10px #aaa;
+      position: relative;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 60px;
+      width: 60px;
+      left: 20px;
+      top: 20px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+      background-color: #00c853;
+    }
+
+    input:checked + .slider:before {
+      background-color: #e8f5e9;
+      box-shadow: 0 0 10px #00c853;
+    }
+
+    .status-label {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h2>Proxy Power</h2>
+  <div class="switch-container">
+    <label class="switch">
+      <input type="checkbox" id="powerToggle" />
+      <span class="slider"></span>
+    </label>
+    <div class="status-label" id="statusText">Loading...</div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
